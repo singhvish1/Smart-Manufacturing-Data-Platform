@@ -55,4 +55,3 @@ CREATE TABLE FactProduction (
 		FOREIGN KEY (date_id)
 		REFERENCES DimDate (date_id)
 );
-

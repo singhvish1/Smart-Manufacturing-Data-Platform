@@ -1,13 +1,8 @@
-# Smart Data Project – Manufacturing Pipeline
+# Smart Manufacturing Data Platform – Detailed Setup
 
-This directory contains a small end-to-end manufacturing analytics stack:
-
-- Synthetic data generator
-- PostgreSQL star-schema warehouse
-- ETL pipeline
-- Anomaly detection
-- Data quality checks
-- Streamlit dashboard
+This document contains a more detailed, step-by-step setup guide for the
+manufacturing analytics stack (data generator, warehouse, ETL, anomalies,
+quality checks, and dashboard).
 
 ## 1. Prerequisites
 
@@ -15,47 +10,51 @@ This directory contains a small end-to-end manufacturing analytics stack:
 - PostgreSQL (local or remote)
 - `pip` for installing Python packages
 
-Install Python dependencies (from this `data` directory):
+From the `smart_data_project` directory, install Python dependencies inside a
+virtual environment:
 
 ```bash
-pip install -r requirements.txt
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
 ```
 
 ## 2. PostgreSQL Setup
 
-1. Create a database (default name used by the code is `manufacturing_dw`):
+1. Create a database (the default name used by the code is `manufacturing_dw`):
 
-	```sql
-	CREATE DATABASE manufacturing_dw;
-	```
+   ```sql
+   CREATE DATABASE manufacturing_dw;
+   ```
 
 2. Set environment variables (optional – otherwise defaults are used):
 
-	```bash
-	export PGHOST=localhost
-	export PGPORT=5432
-	export PGUSER=postgres
-	export PGPASSWORD=postgres
-	export PGDATABASE=manufacturing_dw
-	```
+   ```bash
+   export PGHOST=localhost
+   export PGPORT=5432
+   export PGUSER="$USER"
+   unset PGPASSWORD
+   export PGDATABASE=manufacturing_dw
+   ```
 
-3. Apply the warehouse schema:
+3. Apply the warehouse schema from the project root:
 
-	```bash
-	psql "$PGDATABASE" -h "$PGHOST" -p "$PGPORT" -U "$PGUSER" -f schema.sql
-	```
+   ```bash
+   psql "$PGDATABASE" -f schema.sql
+   ```
 
 Make sure the PostgreSQL user has permission to create tables and insert data.
 
 ## 3. Data Generation
 
-From this `data` directory, generate synthetic production data:
+From the `smart_data_project` directory, generate synthetic production data:
 
 ```bash
 python data_generator.py
 ```
 
-This creates `raw_production_data.csv` with 10,000 engine production records.
+This creates `raw_production_data.csv` with 10,000 engine production records
+next to the script.
 
 ## 4. ETL Pipeline
 
@@ -65,7 +64,8 @@ Load the raw CSV into the PostgreSQL star schema:
 python etl_pipeline.py
 ```
 
-This populates the `DimDate`, `DimMachine`, `DimOperator`, and `FactProduction` tables.
+This populates the `DimDate`, `DimMachine`, `DimOperator`, and `FactProduction`
+tables.
 
 ## 5. Anomaly Detection
 
@@ -76,7 +76,7 @@ python anomaly_detection.py
 ```
 
 This writes anomalies into the `ProductionAnomalies` table and saves
-`anomaly_counts_over_time.png` in this directory.
+`anomaly_counts_over_time.png` in the project directory.
 
 ## 6. Data Quality Checks
 
