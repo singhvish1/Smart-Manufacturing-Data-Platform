@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+
+# macOS
+.DS_Store
+
+# Streamlit
+.streamlit/
+
+# Data outputs
+*.csv
+*.png
+
+# VS Code
+.vscode/
